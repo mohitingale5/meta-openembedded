@@ -8,27 +8,22 @@ HOMEPAGE = "http://software.es.net/iperf/"
 SECTION = "console/network"
 BUGTRACKER = "https://github.com/esnet/iperf/issues"
 AUTHOR = "ESNET <info@es.net>, Lawrence Berkeley National Laboratory <websupport@lbl.gov>"
-LICENSE = "BSD"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=d098223e44bdd19585315ee75cd9d2d7"
-
-DEPENDS = "openssl"
+LICENSE = "BSD-3-Clause"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=b7fb682e9941a49f1214dcd7441410d7"
 
 SRC_URI = "git://github.com/esnet/iperf.git \
-           file://automake-foreign.patch \
-           file://0001-include-stdint.h-for-various-std-c99-int-types.patch \
            file://0002-Remove-pg-from-profile_CFLAGS.patch \
            "
 
-SRCREV = "88d907f7fb58bfab5d086c5da60c922e1c582c92"
+SRCREV = "1f8fb13297f3e3e40169ebcd12e171167e394473"
 
 S = "${WORKDIR}/git"
 
 inherit autotools
 
+PACKAGECONFIG ?= "openssl"
+
 PACKAGECONFIG[lksctp] = "ac_cv_header_netinet_sctp_h=yes,ac_cv_header_netinet_sctp_h=no,lksctp-tools"
+PACKAGECONFIG[openssl] = "--with-openssl=${RECIPE_SYSROOT}${prefix},--without-openssl,openssl"
 
 CFLAGS += "-D_GNU_SOURCE"
-
-EXTRA_OECONF = "--with-openssl=${RECIPE_SYSROOT}"
-
-BBCLASSEXTEND = "native"
